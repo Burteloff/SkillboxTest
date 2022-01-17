@@ -1,0 +1,96 @@
+# -*- coding: utf-8 -*-
+from abc import ABC, abstractmethod
+
+file_name = 'events.txt'
+time_nok = {}
+
+
+class openFile():
+    def act(self):
+        self._name()
+        self._count_event()
+        self.write()
+
+    def _name(self):
+        pass
+
+    def _count_event(self):
+        with open(file_name, 'r') as file:
+            for line in file:
+                time, nok = line.split('] ')
+                time = time[:self.n] + ']'
+                if ("NOK" in nok):
+                    if (time in time_nok):
+                        time_nok[time] += 1
+                    else:
+                        time_nok[time] = 1
+        print(time_nok)
+
+    def write(self):
+        with open("events2.txt", 'w') as file:
+            for i, x in time_nok.items():
+                print(i, x)
+                file.write(f"{i} {x} \n")
+            time_nok.clear()
+
+class MinuteEvent(openFile):
+    def __init__(self):
+        self.n = 17
+        self.act()
+
+    def _name(self):
+        return "Группировка событий по часам"
+class HourEvent(openFile):
+    def __init__(self):
+        self.n = 11
+        self.act()
+
+    def _name(self):
+        return "Группировка событий по часам"
+
+
+class MountEvent(openFile):
+    def __init__(self):
+        self.n = 8
+        self.act()
+
+    def _name(self):
+        return "Группировка событий по месяцу"
+
+class YearEvent(openFile):
+    def __init__(self):
+        self.n = 5
+        self.act()
+
+    def _name(self):
+        return "Группировка событий по месяцу"
+
+
+#hourevent = HourEvent()
+test_event=MinuteEvent()
+# Имеется файл events.txt вида:
+#
+# [2018-05-17 01:55:52.665804] NOK
+# [2018-05-17 01:56:23.665804] OK
+# [2018-05-17 01:56:55.665804] OK
+# [2018-05-17 01:57:16.665804] NOK
+# [2018-05-17 01:57:58.665804] OK
+# ...
+#
+# Напишите программу, которая считывает файл
+# и выводит число событий NOK за каждую минуту в другой файл в формате
+#
+# [2018-05-17 01:57] 1234
+# [2018-05-17 01:58] 4321
+# ...
+#
+# Входные параметры: файл для анализа, файл результата
+# Требования к коду: он должен быть готовым к расширению функциональности. Делать сразу на классах.
+
+# TODO здесь ваш код
+
+# После выполнения первого этапа нужно сделать группировку событий
+#  - по часам
+#  - по месяцу
+#  - по году
+# Для этого пригодится шаблон проектирование "Шаблонный метод" см https://goo.gl/Vz4828
